@@ -7,7 +7,7 @@ Installs dependencies automatically on `gulp <taskname>`.
 ## How to use
 
 	$ git clone https://github.com/platdesign/pd-gulp-assets assets 
-	$ cd assets
+	$ npm install && cd assets
 	$ gulp dev			// For watching in dev process
 	$ gulp build		// For creating a build
 
