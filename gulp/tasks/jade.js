@@ -33,20 +33,18 @@ module.exports = {
 
 
 
-		gulp.task('jade-clean', function(){
-			return del([dest]);
+		gulp.task('jade-clean', function(cb){
+			del([dest], cb);
 		});
 
-		gulp.task('jade-dev-run', function(){
+		gulp.task('jade-dev-run', ['jade-clean'], function(){
 			return gulp.src(src)
 				.pipe(compile())
 				.pipe( gulp.dest(dest) );
 		});
 
-		gulp.task('jade-dev', ['jade-clean', 'jade-dev-run'], function() {
-
+		gulp.task('jade-dev', ['jade-dev-run'], function() {
 			gulp.watch(src, ['jade-dev-run']);
-
 		});
 
 

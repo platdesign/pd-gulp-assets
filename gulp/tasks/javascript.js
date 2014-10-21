@@ -62,11 +62,11 @@ module.exports = {
 		};
 
 
-		gulp.task('js-clean', function(){
-			return del([dest]);
+		gulp.task('js-clean', function(cb){
+			del([dest], cb);
 		});
 
-		gulp.task('js-dev-run', function(){
+		gulp.task('js-dev-run', ['js-clean'], function(){
 			gulp.src(src)
 				.pipe( jshint() )
 				.pipe( jshint.reporter(stylish) )
@@ -75,10 +75,8 @@ module.exports = {
 				.pipe( gulp.dest( dest ));
 		});
 
-		gulp.task('js-dev', ['js-clean', 'js-dev-run'], function(){
-
+		gulp.task('js-dev', ['js-dev-run'], function(){
 			gulp.watch(src, ['js-dev-run'])
-
 		});
 
 

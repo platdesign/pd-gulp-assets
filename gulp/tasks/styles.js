@@ -10,7 +10,8 @@ module.exports = {
 		'gulp-minify-css',
 		'lazypipe',
 		'gulp-livereload',
-		'del'
+		'del',
+		'gulp-plumber'
 	],
 
 	registerTasks: function(gulp, plugin) {
@@ -26,6 +27,8 @@ module.exports = {
 		var lazypipe 		= plugin('lazypipe');
 		var livereload 		= plugin('gulp-livereload');
 		var del 			= plugin('del');
+		var plumber			= plugin('gulp-plumber');
+
 
 		var compile = function(){
 
@@ -39,27 +42,29 @@ module.exports = {
 
 
 
-		gulp.task('styles-clean', function(){
-			return del([dest]);
+		gulp.task('styles-clean', function(cb){
+			del([dest], cb);
 		});
 
-		gulp.task('styles-dev-run', function(){
+		gulp.task('styles-dev-run', ['styles-clean'], function(){
 
 			livereload.listen();
 
 			return gulp.src(src)
+				.pipe( plumber() )
 				.pipe( compile() )
 				.pipe( gulp.dest(dest) )
 				.pipe( livereload({ auto: true }) );
 
 		});
 
-		gulp.task('styles-dev', ['styles-clean', 'styles-dev-run'], function() {
+		gulp.task('styles-dev', ['styles-dev-run'], function() {
 			gulp.watch(src, ['styles-dev-run']);
 		});
 
 		gulp.task('styles-build-run', function(){
 			return gulp.src(src)
+				.pipe( plumber() )
 				.pipe( compile() )
 				.pipe( minifyCSS() )
 				.pipe( gulp.dest(dest) );
